@@ -22,6 +22,7 @@ function setter(name, score){
   xhr = new XMLHttpRequest();
   xhr.open('POST', '/', true);
   xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+
   // フォームに入力した値をパラメータとして設定
   var request = "name=" + name + "&score=" + score;
   xhr.send(request);
@@ -230,6 +231,10 @@ var questionObj = new QuestionData;
 // jQueryによる待ち受け関数
 $(function(){
     $("#start_button").click(function(e){
+      // ユーザー名をcookieに保存
+      name_element = document.getElementById("name");
+      console.log(name_element.value);
+      document.cookie = "johnkabiragame_name=" + name_element.value;
       $("#start_button").css({"display":"none"});
       $("#user_name").css({"display":"none"});
 
@@ -250,14 +255,29 @@ $(function(){
         Promise.resolve()
           .then(function(){
             return new Promise(function (resolve, reject) {
-              setter("test", userObj.correct);
+              var cookie_data = document.cookie.split(';');//split(';')を使用しデータを1つずつに分ける
+              var key_value = [];
+              var name_txt = '';
+
+              // cookieからユーザー名を取得
+              for(i=0; i < cookie_data.length; i++){
+                key_value = cookie_data[i].split('=');
+                // 前後空白削除
+                key_value[0] = key_value[0].trim();
+                if(key_value[0] == 'johnkabiragame_name'){
+                  name_txt = key_value[1];
+                }
+              }
+              if(name_txt){
+                setter(name_txt, userObj.correct);
+              }
               resolve();
             });
           })
           .then(function(){
             return new Promise(function (resolve, reject) {
-              // getter();
-              resolve(getter());
+              getter();
+              resolve();
             })
           }).then(function(results){
               ranking_set(results);
