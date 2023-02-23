@@ -1,3 +1,4 @@
+
   // 配列シャッフル関数　Fisher–Yates shuffleアルゴリズム
   function shuffle(array){
     for (var i = array.length - 1; i >= 0; i--) {
@@ -7,18 +8,54 @@
     return array;
   }
 
-// 計算ボタンを押した際の動作
-function post(xhr, name, score) {
+// // POSTリクエストの設定
+// function post(xhr, name, score) {
+//   xhr.open('POST', '/', true);
+//   xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+//   // フォームに入力した値をパラメータとして設定
+//   var request = "name=" + name + "&score=" + score;
+//   xhr.send(request);
+// }
+
+// ユーザ名とスコアをPOSTする
+function setter(name, score){
+  xhr = new XMLHttpRequest();
   xhr.open('POST', '/', true);
   xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
-  // フォームに入力した値をリクエストとして設定
+  // フォームに入力した値をパラメータとして設定
   var request = "name=" + name + "&score=" + score;
   xhr.send(request);
 }
 
-function setter(name, score){
-  xhr = new XMLHttpRequest();
-  post(xhr, name, score);
+// 得点上位5名のデータを取得する
+function getter(){
+  fetch('/ranking').then((res) => {
+    if (!res.ok) {
+      throw new Error();
+    }
+    return res.text(); 
+  }).then((text) => {
+    results = JSON.parse(text);
+    ranking_set(results);
+  });
+}
+
+// ランキング表示を最新化する
+function ranking_set(results){
+  ranking_elements = document.getElementById('ranking_list');  //ランキングのDOM要素
+  ranking_elements.innerHTML = '';  //ランキングをdocumentごとクリア
+
+  // 取得したユーザー情報をスコアの降順にソート
+  results = results.sort((a,b) =>{
+    return (a.score > b.score) ? -1 : 1;
+  });
+  // ランキング情報を最新化
+  ranking_text = '';
+  for(i=0; i < results.length; i++){
+    ranking_text += '<li style="display:inline;">' + (i+1) + '位：' + results[i].user_name + '</li><br>';
+  }
+  ranking_elements.innerHTML = ranking_text;
+
 }
 
 
@@ -210,7 +247,21 @@ $(function(){
         rate = userObj.result_rate();
         document.getElementById('accuracy_rate').textContent = "正解率:" + rate + "%";
         document.getElementById('accuracy_rate').style.display = "block";
-        setter("test", userObj.correct);
+        Promise.resolve()
+          .then(function(){
+            return new Promise(function (resolve, reject) {
+              setter("test", userObj.correct);
+              resolve();
+            });
+          })
+          .then(function(){
+            return new Promise(function (resolve, reject) {
+              // getter();
+              resolve(getter());
+            })
+          }).then(function(results){
+              ranking_set(results);
+          });  
       });
     });
 

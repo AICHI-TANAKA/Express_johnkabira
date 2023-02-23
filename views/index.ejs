@@ -16,7 +16,7 @@
         <p id="accuracy_rate"></p> 
       </div>
       <div class="container">
-        <ul>
+        <ul class="image-list">
           <li><figure><img name="k-1" id="img_1" src="/images/k-1.jpg"></figure></li>        
           <li><figure><img name="j-2" id="img_2" src="/images/j-2.jpg"></figure></li>        
           <li><figure><img name="k-3" id="img_3" src="/images/k-3.jpg"></figure></li>        
@@ -48,11 +48,13 @@
       <br>
       <div class="ranking" id="ranking">
         <p>★★★ランキング★★★</p>
-        <% i = 1; %>
-        <% lists.forEach((list) => { %>
-          <li style="display:inline;"><%= i %>位：<%= list.user_name %></li><br>
-        <% i++; %>
-        <% }); %>
+        <ul class="ranking-list" id="ranking_list">
+          <% i = 1; %>
+          <% lists.forEach((list) => { %>
+            <li style="display:inline;"><%= i %>位：<%= list.user_name %></li><br>
+          <% i++; %>
+          <% }); %>
+        </ul>
 
       </div>
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>

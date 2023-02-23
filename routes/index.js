@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const { JSDOM } = require('jsdom');
+// const url = 'http://localhost:3000/';
+// const http = require('http');
 
 const connection = require("../env/dbconnect.js");
 
@@ -75,7 +77,7 @@ router.post('/', function (req, res, next) {
           (error, results) => {
             top10_users = results;
             res.render('index', { lists: top10_users });
-            console.dir(res, {depth:0})
+
             if (error) { console.log("取得エラー"); }
           }
         );
