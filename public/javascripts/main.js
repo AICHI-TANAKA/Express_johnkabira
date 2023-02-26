@@ -269,18 +269,14 @@ $(function(){
                 }
               }
               if(name_txt){
-                setter(name_txt, userObj.correct);
+                resolve(setter(name_txt, userObj.correct));
               }
-              resolve();
             });
           })
           .then(function(){
             return new Promise(function (resolve, reject) {
               getter();
-              resolve();
             })
-          }).then(function(results){
-              ranking_set(results);
           });  
       });
     });
