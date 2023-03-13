@@ -3,7 +3,7 @@
 2, pm install db-migrate-mysql       //ドライバインストール
 3, ルートディレクトリにて
    db-migrate up                     //テーブル作成
-4, env > dbconnect.jsを作成し、以下を記述してください。
+4, env/dbconnect.jsを作成し、以下を記述してください。
     const mysql = require('mysql');
 
     const connection_init = mysql.createConnection({
