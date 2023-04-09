@@ -18,7 +18,7 @@
 // }
 
 // ユーザ名とスコアをPOSTする
-function setter(name, score){
+function userdata_setter(name, score){
   xhr = new XMLHttpRequest();
   xhr.open('POST', '/', true);
   xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
@@ -29,7 +29,7 @@ function setter(name, score){
 }
 
 // 得点上位5名のデータを取得する
-function getter(){
+function ranking_getter(){
   fetch('/ranking').then((res) => {
     if (!res.ok) {
       throw new Error();
@@ -269,13 +269,13 @@ $(function(){
                 }
               }
               if(name_txt){
-                resolve(setter(name_txt, userObj.correct));
+                resolve(userdata_setter(name_txt, userObj.correct));
               }
             });
           })
           .then(function(){
             return new Promise(function (resolve, reject) {
-              getter();
+              ranking_getter();
             })
           });  
       });
