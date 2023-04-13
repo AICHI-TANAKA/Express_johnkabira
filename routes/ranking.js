@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const mysql = require('mysql');
 
-const connection = require(”../env/dbconnect.js”);
+const connection = require("../env/dbconnect.js");
 
 
 /* GET users listing. */
