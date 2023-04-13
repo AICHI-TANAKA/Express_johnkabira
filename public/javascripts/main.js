@@ -186,8 +186,6 @@ class QuestionData{
       // 現在の質問を決定
       question_now = [arr_keys[0], questions_data[arr_keys[0]]];
       document.getElementById('question_txt').textContent = "Q" + question_count.count + "." + question_now[1];
-      
-      console.log(arr_keys[0]);
     }
 
     // 正解の人物を設定
@@ -200,11 +198,13 @@ class QuestionData{
       question_count.count++;
     }
 
+    // 現在の質問に対する正解数をリセット
     function correct_count_reset(){
       correct_count.count = 0;
       document.getElementById('correct_count').textContent = "正解数：" + correct_count.count + "/3";
     }
 
+    // 画像を全てクリック不可にする
     function image_all_coverd(){
       for(var i = 0; i < 9; i++){
         document.getElementById('img_' + (i + 1)).parentNode.parentNode.classList.add('clicked');
@@ -233,7 +233,6 @@ $(function(){
     $("#start_button").click(function(e){
       // ユーザー名をcookieに保存
       name_element = document.getElementById("name");
-      console.log(name_element.value);
       document.cookie = "johnkabiragame_name=" + name_element.value;
       $("#start_button").css({"display":"none"});
       $("#user_name").css({"display":"none"});
@@ -252,6 +251,8 @@ $(function(){
         rate = userObj.result_rate();
         document.getElementById('accuracy_rate').textContent = "正解率:" + rate + "%";
         document.getElementById('accuracy_rate').style.display = "block";
+
+        // チェーンメソッドの各then()でPromise型を返す手法 https://qiita.com/hikarut/items/6c236b6d6ff6ec10cd7a
         Promise.resolve()
           .then(function(){
             return new Promise(function (resolve, reject) {
