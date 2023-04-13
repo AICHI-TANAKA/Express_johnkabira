@@ -5,9 +5,7 @@ const { JSDOM } = require('jsdom');
 // const url = 'http://localhost:3000/';
 // const http = require('http');
 var logger = require('../logger');
-
-
-const connection = require("../env/dbconnect.js");
+const connection = require('../env/dbconnect.js');
 
 connection.connect((err) => {
   if (err) {
@@ -16,8 +14,6 @@ connection.connect((err) => {
   }
   console.log('success');
 });
-
-
 
 
 /* GET home page. */
@@ -36,7 +32,6 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-  
   // idの最大値を格納
   var max_id;
   // スコアトップ10のユーザー情報
@@ -47,7 +42,7 @@ router.post('/', function (req, res, next) {
   Promise.resolve()
   .then(function(){
     return new Promise(function (resolve, reject) {
-      logger.access.info("POSTED!");
+      logger.access.info('POSTED!');
       // idの最大値を採番
       connection.query(
         `SELECT MAX(id) as max_id FROM user;`,
@@ -55,8 +50,8 @@ router.post('/', function (req, res, next) {
           // max_id = JSON.parse(JSON.stringify(results[0]).ID) + 1;
           max_id = results[0].max_id + 1;
           if (error) { 
-            console.log("id採番エラー");
-            logger.error.info("id採番エラー");
+            console.log('id採番エラー');
+            logger.error.info('id採番エラー');
           }else{
             resolve(max_id);
           }
@@ -71,8 +66,8 @@ router.post('/', function (req, res, next) {
           `INSERT INTO user (id, user_name, score) VALUES (${max_id}, '${user_name}', ${score});`,
           (error, results) => {
             if (error) { 
-              console.log("INSERTエラー");
-              logger.error.info("INSERTエラー");
+              console.log('INSERTエラー');
+              logger.error.info('INSERTエラー');
             }else{
               resolve('INSERTED!')
             }
@@ -89,8 +84,8 @@ router.post('/', function (req, res, next) {
           top10_users = results;
           res.render('index', { lists: top10_users });
           if (error) { 
-            console.log("取得エラー");
-            logger.error.info("取得エラー");
+            console.log('取得エラー');
+            logger.error.info('取得エラー');
           }
         }
       );

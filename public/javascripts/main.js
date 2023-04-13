@@ -19,6 +19,7 @@
 
 // ユーザ名とスコアをPOSTする
 function userdata_setter(name, score){
+  // ここではxhrを使用（後学のため）
   xhr = new XMLHttpRequest();
   xhr.open('POST', '/', true);
   xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
@@ -30,6 +31,7 @@ function userdata_setter(name, score){
 
 // 得点上位5名のデータを取得する
 function ranking_getter(){
+  // ここではfetchを使用（後学のため）
   fetch('/ranking').then((res) => {
     if (!res.ok) {
       throw new Error();
@@ -53,7 +55,7 @@ function ranking_set(results){
   // ランキング情報を最新化
   ranking_text = '';
   for(i=0; i < results.length; i++){
-    ranking_text += '<li style="display:inline;">' + (i+1) + '位：' + results[i].user_name + '</li><br>';
+    ranking_text += '<li style="display:inline;">' + (i+1) + "位：" + results[i].user_name + "</li><br>";
   }
   ranking_elements.innerHTML = ranking_text;
 
@@ -147,7 +149,7 @@ class QuestionData{
                                 // 終了処理
                                 if(counter == 18){
                                   clearInterval(timerId);
-                                  document.getElementById("judge_txt").textContent = "終了";
+                                  document.getElementById('judge_txt').textContent = "終了";
                                   document.getElementById('correct_count').textContent = "";
                                   image_all_coverd();
                                   resolve();
@@ -215,12 +217,12 @@ class QuestionData{
   // 正誤判定。正解であればtrueを、不正解であればfalseを返す。
   judge(answer){
       if(answer.substring(0,1) == this.correct.answer_person){
-          document.getElementById("judge_txt").textContent = "くぅ～～！！";
+          document.getElementById('judge_txt').textContent = "くぅ～～！！";
           this.correct_count.count++;
           document.getElementById('correct_count').textContent = "正解数：" + this.correct_count.count + "/3";
           return true;
       }
-      document.getElementById("judge_txt").textContent = "ムムッ！！";
+      document.getElementById('judge_txt').textContent = "ムムッ！！";
       return false;
   }  
 }
@@ -230,12 +232,12 @@ var questionObj = new QuestionData;
 
 // jQueryによる待ち受け関数
 $(function(){
-    $("#start_button").click(function(e){
+    $('#start_button').click(function(e){
       // ユーザー名をcookieに保存
-      name_element = document.getElementById("name");
+      name_element = document.getElementById('name');
       document.cookie = "johnkabiragame_name=" + name_element.value;
-      $("#start_button").css({"display":"none"});
-      $("#user_name").css({"display":"none"});
+      $('#start_button').css({"display":"none"});
+      $('#user_name').css({"display":"none"});
 
       questionObj.init();
       quiz_time = new Promise(function(resolve){
@@ -282,16 +284,16 @@ $(function(){
       });
     });
 
-    $("#restart_button").click(function(e){
+    $('#restart_button').click(function(e){
       window.location.reload();
     });
 
     // 画像クリック時処理
-    $("img").click(function(e){
+    $('img').click(function(e){
       // 正誤判定と成績記入
       var answer = this.name;
       // クリックされた画像にカバーをかける jQueryの場合はメソッドで指定
-      $(this).parent().parent().addClass("clicked");
+      $(this).parent().parent().addClass('clicked');
       if(questionObj.judge(answer)){
         userObj.result_add();
       }else{
