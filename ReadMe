@@ -10,9 +10,9 @@
 
     const connection_init = mysql.createConnection({
         host: 'localhost',
-        user: 'root',
-        password: 'password',
-        database: 'john_kabira_game'
+        user: 'root',                  // MySQLのユーザー名
+        password: 'password',          // ユーザーのログインパスワード
+        database: 'john_kabira_game'   // DB名
     });
 
     module.exports = connection_init;
